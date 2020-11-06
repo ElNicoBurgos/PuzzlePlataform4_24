@@ -30,8 +30,10 @@ APuzzlePlatformCharacter::APuzzlePlatformCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;
-
+	GetCharacterMovement()->AirControl = 1.f;
+	GetCharacterMovement()->BrakingDecelerationFalling = 2000.f;
+	GetCharacterMovement()->FallingLateralFriction = 1000.f;
+		
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -45,6 +47,7 @@ APuzzlePlatformCharacter::APuzzlePlatformCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
