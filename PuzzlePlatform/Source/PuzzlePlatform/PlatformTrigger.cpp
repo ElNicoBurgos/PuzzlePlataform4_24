@@ -3,7 +3,7 @@
 
 #include "PlatformTrigger.h"
 #include "Components/BoxComponent.h"
-
+#include "PuzzlePlatformCharacter.h"
 
 // Sets default values
 APlatformTrigger::APlatformTrigger()
@@ -22,7 +22,8 @@ APlatformTrigger::APlatformTrigger()
 void APlatformTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-	BoxComponentRef->OnComponentBeginOverlap.AddDynamic(this, &APlatformTrigger::OnBeginOverlap);
+	BoxComponentRef->OnComponentBeginOverlap.AddUniqueDynamic(this, &APlatformTrigger::OnBeginOverlap);
+	BoxComponentRef->OnComponentEndOverlap.AddUniqueDynamic(this, &APlatformTrigger::OnOverlapEnd);
 }
 
 // Called every frame
@@ -34,6 +35,15 @@ void APlatformTrigger::Tick(float DeltaTime)
 
 void APlatformTrigger::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	APuzzlePlatformCharacter* MyCharacter = Cast<APuzzlePlatformCharacter>(OtherActor);
+	check(MyCharacter);
+	UE_LOG(LogTemp, Warning, TEXT("Pise"));
+}
 
+void APlatformTrigger::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	APuzzlePlatformCharacter* MyCharacter = Cast<APuzzlePlatformCharacter>(OtherActor);
+	check(MyCharacter);
+	UE_LOG(LogTemp, Warning, TEXT("Me fui"));
 }
 
