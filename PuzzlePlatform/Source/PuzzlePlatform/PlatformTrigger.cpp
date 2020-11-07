@@ -3,6 +3,7 @@
 
 #include "PlatformTrigger.h"
 #include "Components/BoxComponent.h"
+#include "MovingPlatform.h"
 #include "PuzzlePlatformCharacter.h"
 
 // Sets default values
@@ -13,9 +14,11 @@ APlatformTrigger::APlatformTrigger()
 	BoxComponentRef = CreateAbstractDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	RootComponent = BoxComponentRef;
 	BoxComponentRef->InitBoxExtent(FVector(50.f, 50.f, 100.f));
-	
+	BoxComponentRef->SetGenerateOverlapEvents(true);
+
 	MeshComponentRef = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponentRef->SetupAttachment(BoxComponentRef);
+
 }
 
 // Called when the game starts or when spawned
@@ -37,13 +40,29 @@ void APlatformTrigger::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 {
 	APuzzlePlatformCharacter* MyCharacter = Cast<APuzzlePlatformCharacter>(OtherActor);
 	check(MyCharacter);
-	UE_LOG(LogTemp, Warning, TEXT("Pise"));
+
+	if(HasAuthority())
+	{
+		for(AMovingPlatform* Platform : PlatformsTriggers)
+		{
+			Platform->AddActiveTrigger();
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Pise"));
+	}
 }
 
 void APlatformTrigger::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	APuzzlePlatformCharacter* MyCharacter = Cast<APuzzlePlatformCharacter>(OtherActor);
 	check(MyCharacter);
-	UE_LOG(LogTemp, Warning, TEXT("Me fui"));
+
+	if(HasAuthority())
+	{
+		for(AMovingPlatform* Platform : PlatformsTriggers)
+		{
+			Platform->RemoveActiveTrigger();
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Me fui"));
+	}
 }
 

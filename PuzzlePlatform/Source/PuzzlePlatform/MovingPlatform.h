@@ -20,6 +20,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	void AddActiveTrigger();
+	void RemoveActiveTrigger();
+
 private:
 	UPROPERTY(EditAnywhere)
 	float Velocity = 20.f;
@@ -29,4 +32,7 @@ private:
 
 	FVector GlobalStartLocation;
 	FVector GlobalTargetLocation;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	int ActiveTriggers = 0;
 };
