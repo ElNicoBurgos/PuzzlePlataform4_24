@@ -2,8 +2,7 @@
 
 
 #include "PuzzlePlataformGameInstance.h"
-//#include "UnrealEngine.h"
-//#include "Engine/Engine.h"
+
 
 UPuzzlePlataformGameInstance::UPuzzlePlataformGameInstance(const FObjectInitializer& ObjectInitializer)
 {
@@ -19,9 +18,12 @@ void UPuzzlePlataformGameInstance::Init()
 void UPuzzlePlataformGameInstance::Host()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Hosting"));
+
+	GetWorld()->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 }
 
 void UPuzzlePlataformGameInstance::Join(const FString& Address)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Join to " + Address);
+	//GetWorld()->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 }
